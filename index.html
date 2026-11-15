@@ -54,12 +54,20 @@ html,body,button{touch-action:manipulation}
 @media(pointer:coarse){.kbd,#ccw,#cw,.keys-section{display:none}.arrows{display:block}}
 /* --- Touch: alt på én side. Highscore-knap øverst til højre, bedste tid/færrest træk under tid/træk, store knapper --- */
 .hs-top,.pill .best{display:none}
+/* Top 10-medaljen (touch): guldmønt med "TOP 10" og et bånd */
+.hs-top{all:unset;display:none;box-sizing:border-box;cursor:pointer;position:relative;width:54px;height:66px;flex:none;align-self:start;-webkit-tap-highlight-color:transparent}
+.hs-top .ribbon{position:absolute;left:50%;top:0;width:34px;height:26px;transform:translateX(-50%)}
+.hs-top .ribbon::before,.hs-top .ribbon::after{content:"";position:absolute;top:0;width:13px;height:26px}
+.hs-top .ribbon::before{left:3px;background:#3b7be0;transform:skewX(18deg)}.hs-top .ribbon::after{right:3px;background:#2abf91;transform:skewX(-18deg)}
+.hs-top .coin{position:absolute;left:0;bottom:0;width:54px;height:54px;border-radius:50%;display:grid;place-content:center;text-align:center;line-height:1;color:#2a1d00;background:radial-gradient(circle at 35% 30%,#fff6c8 0,#f1cf6a 30%,#c9971f 64%,#8a6210 100%);border:2px solid #f6dc8a;box-shadow:inset 0 0 0 4px #b8861b55,inset 0 0 0 6px #fff1b84d,0 5px 16px #d4a72c55;text-shadow:0 1px #fff3c466;transition:filter .14s}
+.hs-top .coin small{font-size:9px;font-weight:900;letter-spacing:.1em}.hs-top .coin b{font-size:20px;font-weight:900}
+.hs-top:hover .coin{filter:brightness(1.08) saturate(1.1)}.hs-top:focus-visible .coin{outline:3px solid #fff;outline-offset:3px}
 @media(pointer:coarse){
 .side{display:none}.app{grid-template-columns:minmax(0,1fr)}
 .topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:8px 10px}
 .topbar .choices{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:flex-start}
-.hs-top{display:flex;width:auto;margin:0;gap:6px;padding:7px 12px 7px 9px}.hs-top .medal{width:24px;height:24px;flex:none}.hs-top span{white-space:nowrap;font-size:15px;font-weight:850}
-.pill .best{display:block;margin-top:2px;color:var(--muted);font-size:12px;white-space:nowrap}.pill .best b{color:var(--text)}
+.hs-top{display:block}
+.sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(11px,3.5vw,16px)}.pill .best{display:block;margin-top:2px;color:var(--muted);font-size:12px;white-space:nowrap}.pill .best b{color:var(--text)}
 .controls{flex-wrap:nowrap;align-items:stretch}.controls .btn{flex:1 1 0;max-width:260px;padding:clamp(10px,2vh,16px) 8px;font-size:clamp(15px,2.2vh,17px);white-space:nowrap}
 }
 /* --- Telefon på langs: spillet kan kun spilles på højkant --- */
@@ -74,8 +82,8 @@ html,body,button{touch-action:manipulation}
 <body>
 <main class="app">
 <section class="card game" id="gameCard">
-  <div class="topbar"><div><h1>Rotation</h1><p class="sub">Et moderne gensyn med Nokia-klassikeren</p></div><button class="hs-open hs-top" id="openHsTop" aria-label="Highscore, top 10"><svg class="medal" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 2h3.6l2.4 6.4M16.5 2h-3.6l-1.2 3.2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="12" cy="15.2" r="6.3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 11.7l1.05 2.15 2.35.33-1.7 1.65.4 2.35-2.1-1.1-2.1 1.1.4-2.35-1.7-1.65 2.35-.33z" fill="currentColor"/></svg><span>Top 10</span></button><div class="choices"><div class="choice"><span class="lbl">Bræt</span><button id="b3" class="active">3 × 3</button><button id="b4">4 × 4</button><button id="b5">5 × 5</button></div><div class="choice"><span class="lbl">Boks</span><button id="k2" class="active">2 × 2</button><button id="k3" disabled title="3 × 3-boksen kan bruges på 4 × 4 og 5 × 5">3 × 3</button></div></div></div>
-  <div class="stats"><div class="pill"><small>Tid</small><strong id="time">00:00.0</strong><span class="best">Bedste: <b id="bestTimeT">–</b></span></div><div class="pill"><small>Træk</small><strong id="moves">0</strong><span class="best">Færrest: <b id="bestMovesT">–</b></span></div><div class="pill"><small>Bræt · boks</small><strong id="sizeLabel">3×3 · 2×2</strong></div></div>
+  <div class="topbar"><div><h1>Rotation</h1><p class="sub">Et moderne gensyn med Nokia-klassikeren</p></div><button class="hs-top" id="openHsTop" aria-label="Highscore, top 10"><span class="ribbon" aria-hidden="true"></span><span class="coin" aria-hidden="true"><small>TOP</small><b>10</b></span></button><div class="choices"><div class="choice"><span class="lbl">Bræt</span><button id="b3" class="active">3 × 3</button><button id="b4">4 × 4</button><button id="b5">5 × 5</button></div><div class="choice"><span class="lbl">Boks</span><button id="k2" class="active">2 × 2</button><button id="k3" disabled title="3 × 3-boksen kan bruges på 4 × 4 og 5 × 5">3 × 3</button></div></div></div>
+  <div class="stats"><div class="pill"><small>Tid</small><strong id="time">00:00.0</strong><span class="best">Bedste: <b id="bestTimeT">–</b></span></div><div class="pill"><small>Træk</small><strong id="moves">0</strong><span class="best">Færrest: <b id="bestMovesT">–</b></span></div></div>
   <div class="board-area"><div class="board-wrap" id="boardWrap"><div class="board" id="board"></div><div class="selector" id="selector"><svg class="arrows" id="arrows" aria-hidden="true"></svg></div></div></div>
   <div class="message" id="message" aria-live="polite">Placér tallene i stigende rækkefølge</div>
   <div class="controls"><button class="btn" id="ccw">↶ Mod uret<span class="kbd"> (Z)</span></button><button class="btn primary" id="cw">Med uret ↷<span class="kbd"> (X)</span></button><button class="btn" id="newGame">Nyt spil<span class="kbd"> (N)</span></button><button class="btn" id="retry">Prøv samme igen<span class="kbd"> (R)</span></button></div>
@@ -91,7 +99,7 @@ html,body,button{touch-action:manipulation}
 <div class="modal" id="hsModal" hidden><div class="card dialog wide" role="dialog" aria-modal="true" aria-labelledby="hsTitle"><div class="hs-head"><p id="hsTitle">Top 10</p><div class="choices"><div class="choice"><span class="lbl">Bræt</span><button id="hs3">3 × 3</button><button id="hs4">4 × 4</button><button id="hs5">5 × 5</button></div><div class="choice"><span class="lbl">Boks</span><button id="hsk2">2 × 2</button><button id="hsk3">3 × 3</button></div></div><button class="btn" id="hsClose">Luk</button></div><div class="hs-lists"><div><h3>Hurtigste tid</h3><div id="hsTime"></div></div><div><h3>Færrest træk</h3><div id="hsMoves"></div></div></div></div></div>
 <script>
 (()=>{
-const $=s=>document.querySelector(s), boardEl=$('#board'), selector=$('#selector'), msg=$('#message'), timeEl=$('#time'), movesEl=$('#moves'), sizeLabel=$('#sizeLabel'), card=$('#gameCard'), modal=$('#confirm'), nameModal=$('#nameModal'), hsModal=$('#hsModal');
+const $=s=>document.querySelector(s), boardEl=$('#board'), selector=$('#selector'), msg=$('#message'), timeEl=$('#time'), movesEl=$('#moves'), card=$('#gameCard'), modal=$('#confirm'), nameModal=$('#nameModal'), hsModal=$('#hsModal');
 const START_MSG='Placér tallene i stigende rækkefølge';
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 let n=3, board=[], start=[], row=0,col=0,moves=0,startAt=0,timer=null,running=false,pending=null,pendingEntry=null;
@@ -228,7 +236,7 @@ function drawArrows(S,cell){const key=Math.round(S)+'/'+Math.round(cell);if(key=
   el.setAttribute('viewBox',`0 0 ${S} ${S}`);el.setAttribute('width',S);el.setAttribute('height',S);
   el.innerHTML=`<g>${one}</g><g transform="translate(${S},0) scale(-1,1)">${one}</g><g transform="rotate(90 ${c} ${c})">${one}</g><g transform="translate(${S},0) scale(-1,1) rotate(90 ${c} ${c})">${one}</g>`}
 function animate({p,from}){if(reduceMotion.matches||!boardEl.children[0].animate)return;const {step}=geometry();p.forEach((dst,i)=>{const src=from[i],dx=(src%n-dst%n)*step,dy=(Math.floor(src/n)-Math.floor(dst/n))*step;boardEl.children[dst].animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'translate(0,0)'}],{duration:170,easing:'cubic-bezier(.25,.8,.3,1)'})})}
-function render(anim){boardEl.style.gridTemplateColumns=`repeat(${n},1fr)`;boardEl.style.setProperty('--n',n);boardEl.innerHTML=board.map(x=>`<div class="tile">${x}</div>`).join('');movesEl.textContent=moves;sizeLabel.textContent=`${n}×${n} · ${box}×${box}`;if(anim)animate(anim);requestAnimationFrame(placeSelector)}
+function render(anim){boardEl.style.gridTemplateColumns=`repeat(${n},1fr)`;boardEl.style.setProperty('--n',n);boardEl.innerHTML=board.map(x=>`<div class="tile">${x}</div>`).join('');movesEl.textContent=moves;if(anim)animate(anim);requestAnimationFrame(placeSelector)}
 function startClock(){if(running)return;running=true;startAt=Date.now();timer=setInterval(()=>timeEl.textContent=format(elapsed()),100)}
 function finish(){running=false;clearInterval(timer);const t=Date.now()-startAt;timeEl.textContent=format(t);msg.textContent=`Løst på ${format(t)} og ${moves} træk!`;card.classList.remove('win');void card.offsetWidth;card.classList.add('win');
   if(cheated){msg.textContent=`Løst med snydekode på ${format(t)} og ${moves} træk. Ingen highscore denne gang 😉`;return}
