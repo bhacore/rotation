@@ -58,17 +58,23 @@ html,body,button{touch-action:manipulation}
 .side{display:none}.app{grid-template-columns:minmax(0,1fr)}
 .topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:8px 10px}
 .topbar .choices{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:flex-start}
-.hs-top{display:flex;width:auto;margin:0;gap:10px;padding:9px 14px}.hs-top h2{font-size:16px}.hs-top span{white-space:nowrap}
+.hs-top{display:flex;width:auto;margin:0;gap:6px;padding:7px 12px 7px 9px}.hs-top .medal{width:24px;height:24px;flex:none}.hs-top span{white-space:nowrap;font-size:15px;font-weight:850}
 .pill .best{display:block;margin-top:2px;color:var(--muted);font-size:12px;white-space:nowrap}.pill .best b{color:var(--text)}
 .controls{flex-wrap:nowrap;align-items:stretch}.controls .btn{flex:1 1 0;max-width:260px;padding:clamp(10px,2vh,16px) 8px;font-size:clamp(15px,2.2vh,17px);white-space:nowrap}
 }
+/* --- Telefon på langs: spillet kan kun spilles på højkant --- */
+.rotate-lock{display:none}
+@media(pointer:coarse) and (orientation:landscape) and (max-height:500px){.app{visibility:hidden}.rotate-lock{display:grid;position:fixed;inset:0;z-index:50;place-items:center;align-content:center;gap:14px;background:var(--bg);color:var(--text);font-weight:750;font-size:17px}.rotate-lock p{margin:0;color:var(--muted)}}
+.rotate-lock svg{width:84px;height:84px;color:var(--accent);animation:turnPhone 2.4s ease-in-out infinite}
+@keyframes turnPhone{0%,20%{transform:rotate(-90deg)}55%,100%{transform:rotate(0)}}
+@media(prefers-reduced-motion:reduce){.rotate-lock svg{animation:none}}
 @media(pointer:coarse) and (min-aspect-ratio:1/1){.topbar{grid-template-columns:auto minmax(0,1fr) auto}.hs-top{grid-column:3;grid-row:1}.topbar .choices{grid-column:2;grid-row:1;justify-content:center}}
 </style>
 </head>
 <body>
 <main class="app">
 <section class="card game" id="gameCard">
-  <div class="topbar"><div><h1>Rotation</h1><p class="sub">Et moderne gensyn med Nokia-klassikeren</p></div><button class="hs-open hs-top" id="openHsTop"><h2>Highscore</h2><span>Top 10 ›</span></button><div class="choices"><div class="choice"><span class="lbl">Bræt</span><button id="b3" class="active">3 × 3</button><button id="b4">4 × 4</button><button id="b5">5 × 5</button></div><div class="choice"><span class="lbl">Boks</span><button id="k2" class="active">2 × 2</button><button id="k3" disabled title="3 × 3-boksen kan bruges på 4 × 4 og 5 × 5">3 × 3</button></div></div></div>
+  <div class="topbar"><div><h1>Rotation</h1><p class="sub">Et moderne gensyn med Nokia-klassikeren</p></div><button class="hs-open hs-top" id="openHsTop" aria-label="Highscore, top 10"><svg class="medal" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 2h3.6l2.4 6.4M16.5 2h-3.6l-1.2 3.2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="12" cy="15.2" r="6.3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 11.7l1.05 2.15 2.35.33-1.7 1.65.4 2.35-2.1-1.1-2.1 1.1.4-2.35-1.7-1.65 2.35-.33z" fill="currentColor"/></svg><span>Top 10</span></button><div class="choices"><div class="choice"><span class="lbl">Bræt</span><button id="b3" class="active">3 × 3</button><button id="b4">4 × 4</button><button id="b5">5 × 5</button></div><div class="choice"><span class="lbl">Boks</span><button id="k2" class="active">2 × 2</button><button id="k3" disabled title="3 × 3-boksen kan bruges på 4 × 4 og 5 × 5">3 × 3</button></div></div></div>
   <div class="stats"><div class="pill"><small>Tid</small><strong id="time">00:00.0</strong><span class="best">Bedste: <b id="bestTimeT">–</b></span></div><div class="pill"><small>Træk</small><strong id="moves">0</strong><span class="best">Færrest: <b id="bestMovesT">–</b></span></div><div class="pill"><small>Bræt · boks</small><strong id="sizeLabel">3×3 · 2×2</strong></div></div>
   <div class="board-area"><div class="board-wrap" id="boardWrap"><div class="board" id="board"></div><div class="selector" id="selector"><svg class="arrows" id="arrows" aria-hidden="true"></svg></div></div></div>
   <div class="message" id="message" aria-live="polite">Placér tallene i stigende rækkefølge</div>
@@ -79,6 +85,7 @@ html,body,button{touch-action:manipulation}
   <div class="section keys-section"><h2>Numerisk tastatur</h2><div class="keys"><div class="key on">7 ↶</div><div class="key on">8 ▲</div><div class="key on">9 ↷</div><div class="key on">4 ◀</div><div class="key on">5 ↷</div><div class="key on">6 ▶</div><div class="key">1</div><div class="key on">2 ▼</div><div class="key">3</div><div class="key"></div><div class="key on">0 ↶</div><div class="key"></div></div><p class="keys-note">Piletasterne flytter også boksen.</p></div>
 </aside>
 </main>
+<div class="rotate-lock" aria-live="polite"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="4" width="20" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><line x1="21" y1="38" x2="27" y2="38" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg><p>Vend telefonen</p></div>
 <div class="modal" id="confirm" hidden><div class="card dialog" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><p id="confirmTitle">Opgiv det nuværende spil?</p><div class="help">Du er midt i et forsøg. Tid og træk bliver ikke gemt.</div><div class="controls"><button class="btn" id="confirmNo">Fortsæt spillet</button><button class="btn primary" id="confirmYes">Ja, opgiv</button></div></div></div>
 <div class="modal" id="nameModal" hidden><form class="card dialog" id="nameForm" role="dialog" aria-modal="true" aria-labelledby="nameTitle"><p id="nameTitle">Ny highscore!</p><div class="help" id="nameInfo"></div><input class="name-input" id="nameInput" maxlength="20" autocomplete="off" placeholder="Dit navn" aria-label="Dit navn"><div class="controls"><button class="btn primary" type="submit">Gem</button></div></form></div>
 <div class="modal" id="hsModal" hidden><div class="card dialog wide" role="dialog" aria-modal="true" aria-labelledby="hsTitle"><div class="hs-head"><p id="hsTitle">Top 10</p><div class="choices"><div class="choice"><span class="lbl">Bræt</span><button id="hs3">3 × 3</button><button id="hs4">4 × 4</button><button id="hs5">5 × 5</button></div><div class="choice"><span class="lbl">Boks</span><button id="hsk2">2 × 2</button><button id="hsk3">3 × 3</button></div></div><button class="btn" id="hsClose">Luk</button></div><div class="hs-lists"><div><h3>Hurtigste tid</h3><div id="hsTime"></div></div><div><h3>Færrest træk</h3><div id="hsMoves"></div></div></div></div></div>
@@ -229,7 +236,7 @@ function finish(){running=false;clearInterval(timer);const t=Date.now()-startAt;
   if(!rt&&!rm)return;
   const parts=[rt&&`<b>${rt}. plads</b> efter tid`,rm&&`<b>${rm}. plads</b> efter træk`].filter(Boolean);
   $('#nameInfo').innerHTML=`Du kom på ${parts.join(' og ')} (${n} × ${n} med ${box} × ${box}-boks). Skriv dit navn til listen.`;
-  pendingEntry={entry,size:n,b:box};$('#nameInput').value=read('rotationLastName','')||'';openModal(nameModal,$('#nameInput'));$('#nameInput').select()}
+  pendingEntry={entry,size:n,b:box};$('#nameInput').value=read('rotationLastName','')||'';openModal(nameModal,$('#nameInput'));$('#nameInput').select();nameOpenedAt=Date.now()}
 function saveName(){if(!pendingEntry)return;const {entry,size,b}=pendingEntry;pendingEntry=null;entry.name=$('#nameInput').value.trim().slice(0,20)||'Anonym';write('rotationLastName',entry.name);
   const ok=addGame(size,b,entry);closeModal(nameModal);showScores();if(!ok)msg.textContent+=' (highscore kan ikke gemmes permanent i denne browser)';openHs(size,b,entry)}
 function doTurn(cw){if(done()&&moves>0)return;startClock();const anim=rotate(board,row,col,cw);moves++;msg.textContent='';render(anim);if(done())finish()}
@@ -253,7 +260,10 @@ function closeModal(el){el.hidden=true;if([modal,nameModal,hsModal].every(m=>m.h
 function confirmThen(action){if(!inProgress())return action();pending=action;openModal(modal,$('#confirmNo'))}
 function closeConfirm(ok){const a=pending;pending=null;closeModal(modal);if(ok&&a)a()}
 $('#confirmYes').onclick=()=>closeConfirm(true);$('#confirmNo').onclick=()=>closeConfirm(false);modal.addEventListener('click',e=>{if(e.target===modal)closeConfirm(false)});
-$('#nameForm').onsubmit=e=>{e.preventDefault();saveName()};
+// Det sidste tryk, der løser spillet, kan på touch følges af et "klik" samme sted, når navnedialogen allerede er åben.
+// Det må ikke trykke på "Gem", så Gem virker først et halvt sekund efter, at dialogen er åbnet.
+let nameOpenedAt=0;
+$('#nameForm').onsubmit=e=>{e.preventDefault();if(Date.now()-nameOpenedAt<500)return;saveName()};
 $('#openHs').onclick=()=>openHs();$('#openHsTop').onclick=()=>openHs();$('#hsClose').onclick=()=>closeModal(hsModal);$('#hs3').onclick=()=>{hsSize=3;renderHs()};$('#hs4').onclick=()=>{hsSize=4;renderHs()};$('#hs5').onclick=()=>{hsSize=5;renderHs()};$('#hsk2').onclick=()=>{hsBox=2;renderHs()};$('#hsk3').onclick=()=>{if(hsSize!==3){hsBox=3;renderHs()}};hsModal.addEventListener('click',e=>{if(e.target===hsModal)closeModal(hsModal)});
 $('#cw').onclick=()=>turn(true);$('#ccw').onclick=()=>turn(false);$('#newGame').onclick=()=>confirmThen(newGame);$('#retry').onclick=()=>confirmThen(retry);$('#b3').onclick=()=>confirmThen(()=>setSize(3));$('#b4').onclick=()=>confirmThen(()=>setSize(4));$('#b5').onclick=()=>confirmThen(()=>setSize(5));$('#k2').onclick=()=>confirmThen(()=>setBox(2));$('#k3').onclick=()=>confirmThen(()=>setBox(3));
 const ROTATE_KEYS=['Numpad7','Numpad9','Numpad5','Numpad0','KeyZ','KeyX','KeyN','KeyR','KeyH'];
